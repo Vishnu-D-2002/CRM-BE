@@ -21,4 +21,4 @@ mongoose.connect(MONGODB)
 app.use(express.json());
 app.use(cors());
 
-app.use('/', UserRouter);
+app.use('/', UserRouter); 
