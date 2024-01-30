@@ -17,7 +17,7 @@ app.use(cors());
 
 app.use('/', UserRouter); 
 app.use('/ticket', TicketRouter)
-app.use('/mentee', adminRouter)
+app.use('/admin', adminRouter)
 
 
 mongoose.connect(MONGODB)
