@@ -43,7 +43,7 @@ const usercontrollers = {
           const Token = await jwt.sign({
             email: email,
             id: checkEmail._id
-          }, JWTPASS);
+          }, JWT_SECRET);
 
           return res.json({ Token,user:'student',checkEmail });
         } else {
