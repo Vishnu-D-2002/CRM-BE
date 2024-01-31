@@ -126,7 +126,7 @@ const usercontrollers = {
       },
     });
 
-    const link =` https://candid-pudding-d739b9.netlify.app/reset-password/new-password/${OTP}`;
+    const link =` https://customer-relationship.netlify.app/reset-password/new-password/${OTP}`;
 
     const mailOptions = {
       from: 'Password_reset_noreply@gmail.com',
@@ -198,7 +198,7 @@ const usercontrollers = {
       },
     });
 
-    const activationLink = ` https://candid-pudding-d739b9.netlify.app/activate-account/${activationToken}`;
+    const activationLink = ` https://customer-relationship.netlify.app/activate-account/${activationToken}`;
     const mailOptions = {
       from: 'noreply@example.com',
       to: email,
