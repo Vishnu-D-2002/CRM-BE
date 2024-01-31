@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const User = require('../models/user');
@@ -180,55 +180,94 @@ const usercontrollers = {
   activetlikesent: async (req, res) => {
     const { email } = req.params;
     const user = await User.findOne({ email });
-    console.log(user.activated)
-    if (user.activated) {
-      return res.json({ message: 'User Already Activated' });
-    }
-    if (!user) {
-      return res.json({ message: "Invalid User" });
-    }
-    const activationToken = Math.random().toString(36).slice(-10);
-    user.activationToken = activationToken;
-    await user.save()
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: '143.lovvable@gmail.com',
-        pass: 'fnmxhibtwjgdzajq',
-      },
-    });
+    const admin=await Admin.findOne({email})
+    console.log(user,admin)
 
-    const activationLink = ` https://customer-relationship.netlify.app/activate-account/${activationToken}`;
-    const mailOptions = {
-      from: 'noreply@example.com',
-      to: email,
-      subject: 'Activate Your Account',
-      text:` Welcome to the site! Please click the following link to activate your account: ${activationLink}`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-        return res.json({ message: 'Error sending activation email' });
-      } else {
-        return res.json({ message: 'Activation email sent successfully' });
+    if (user) {
+      if (user.activated) {
+        return res.json({ message: 'User Already Activated' });
       }
-    });
+      const activationToken = Math.random().toString(36).slice(-10);
+      user.activationToken = activationToken;    
+      await user.save()
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: '143.lovvable@gmail.com',
+          pass: 'fnmxhibtwjgdzajq',
+        },
+      });
+  
+      const activationLink = ` https://customer-relationship.netlify.app/activate-account/${activationToken}`;
+      const mailOptions = {
+        from: 'noreply@example.com',
+        to: email,
+        subject: 'Activate Your Account',
+        text:` Welcome to the site! Please click the following link to activate your account: ${activationLink}`,
+      };
+  
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          return res.json({ message: 'Error sending activation email' });
+        } else {
+          return res.json({ message: 'Activation email sent successfully' });
+        }
+      });
+    }
+    if (admin) {
+      if (admin.activated) {
+        return res.json({ message: 'User Already Activated' });
+      }
+      const activationToken = Math.random().toString(36).slice(-10);
+      admin.activationToken = activationToken;
+      await admin.save()
+    
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: '143.lovvable@gmail.com',
+          pass: 'fnmxhibtwjgdzajq',
+        },
+      });
 
+      const activationLink = ` https://customer-relationship.netlify.app/activate-account/${activationToken}`;
+      const mailOptions = {
+        from: 'noreply@example.com',
+        to: email,
+        subject: 'Activate Your Account',
+        text: ` Welcome to the site! Please click the following link to activate your account: ${activationLink}`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          return res.json({ message: 'Error sending activation email' });
+        } else {
+          return res.json({ message: 'Activation email sent successfully' });
+        }
+      });
+    }
   },
 
   activateAccount: async (req, res) => {
     try {
       const { activationToken } = req.params;
       const user = await User.findOne({ activationToken, activated: false });
-
+      const admin = await Admin.findOne({ activationToken, activated: false });
       if (user) {
         user.activated = true;
-        user.activationToken = null;
-        await user.save();
-
+        user.activationToken = null;  
+        await user.save();  
         return res.json({ message: 'Account activated successfully' });
-      } else {
+      }
+      else if (admin) {
+        admin.activated = true;
+        admin.activationToken = null;
+        await admin.save();
+        return res.json({ message: 'Account activated successfully' });
+      }
+      else {
         return res.json({ message: 'Invalid activation token or account already activated' });
       }
     } catch (error) {

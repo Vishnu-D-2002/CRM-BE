@@ -5,6 +5,8 @@ const adminSchema =new mongoose.Schema({
     email: String,
     passwordHash: String,
     reset_OTP: String,
+    activationToken: String,
+    activated: { type: Boolean, default: false },
     tickets: [
         {
             type: mongoose.Schema.Types.ObjectId,

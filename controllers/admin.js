@@ -3,30 +3,6 @@ const Admin = require('../models/admin');
 const Ticket = require('../models/ticket');
 
 const adminControllers = {
-    // signup: async (req, res) => {
-    //     try {
-    //         const { name, email, password, userRole } = req.body;
-    //         if (userRole == "admin") {
-    //             const existingUser = await Admin.findOne({ email })
-
-
-    //             if (existingUser) {
-    //                 return res.json({ message: 'This email is already in use. Please try another email or sign in to your account.' })
-    //             }
-    //         }
-    //         const passwordHash = await bcrypt.hash(password, 10);
-
-    //         const user = new Admin({
-    //             name, email, passwordHash
-    //         });
-
-    //         await user.save()
-    //         return res.status(200).json({ message: 'User created successfully' })
-    //     } catch (e) {
-    //         console.log('Signup error', e)
-    //         return res.status(500).json({ message: 'Internal error' });
-    //     }
-    // },
     assignAdmin: async (req, res) => {
         try {
             const { ticketId, adminId } = req.params;
