@@ -7,22 +7,42 @@ const { JWT_SECRET } = require('../config');
 
 const usercontrollers = {
   signup: async (req, res) => {
-    try {
-      const { name, email, password } = req.body;
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return res.json({ message: 'This email is already in use. Try another email or sign in to your account.' });
-      }
-      const passwordHash = await bcrypt.hash(password, 10);
+    const { name, email, password, userRole } = req.body;
+    if (userRole == "customer") {
+      try {
+          const existingUser = await User.findOne({ email });
+          if (existingUser) {
+            return res.json({ message: 'This email is already in use. Try another email or sign in to your account.' });
+          }
+        const passwordHash = await bcrypt.hash(password, 10);
 
-      const user = new User({
-        name, email, passwordHash
-      });
-      await user.save();
-      return res.status(200).json({ message: 'User created successfully' });
-    } catch (e) {
-      console.log('Signup error', e);
-      res.status(500).json({ message: "Internal Server Error" });
+        const user = new User({
+          name, email, passwordHash
+        });
+        await user.save();
+        return res.status(200).json({ message: 'User created successfully' });
+      } catch (e) {
+        console.log('Signup error', e);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    } else {
+      try {
+          const existingUser = await Admin.findOne({ email })
+          if (existingUser) {
+            return res.json({ message: 'This email is already in use. Please try another email or sign in to your account.' })
+          }
+        const passwordHash = await bcrypt.hash(password, 10);
+
+        const user = new Admin({
+          name, email, passwordHash
+        });
+
+        await user.save()
+        return res.status(200).json({ message: 'User created successfully' })
+      } catch (e) {
+        console.log('Signup error', e)
+        return res.status(500).json({ message: 'Internal error' });
+      }
     }
   },
 
