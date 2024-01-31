@@ -4,8 +4,8 @@ const ticketcontroller = require('../controllers/ticket');
 const profileDetailes = require('../controllers/profile');
 const TicketRouter = express.Router();
 
-TicketRouter.post('/', authenticate, ticketcontroller.createTicket)
-TicketRouter.get('/', authenticate, ticketcontroller.getTicket)
+TicketRouter.post('/', ticketcontroller.createTicket)
+TicketRouter.get('/', ticketcontroller.getTicket)
 TicketRouter.delete('/:ticketId', authenticate, ticketcontroller.deleteTicket)
 TicketRouter.patch('/:ticketId', authenticate, ticketcontroller.editTicket)
 TicketRouter.get('/all',ticketcontroller.getAllTickets)
