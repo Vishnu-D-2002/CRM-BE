@@ -81,7 +81,7 @@ const usercontrollers = {
           id: admin._id
         }, JWT_SECRET);
 
-        return res.json({ Token, admin });
+        return res.json({ Token, user:admin});
       } else {
         return res.json({ message: 'User not found!' });
       }
