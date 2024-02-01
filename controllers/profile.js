@@ -10,7 +10,7 @@ const profileDetailes={
                 user.email = email
                 user.name = name
                 user.aternateEmail = aternateEmail;
-                user.contact = Contact;
+                user.Contact = Contact;
                 user.gender = gender;
                 user.address = address;
 
