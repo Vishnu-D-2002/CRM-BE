@@ -10,7 +10,8 @@ const userSchema =new mongoose.Schema({
     passwordHash: String,
     activationToken: String,
     activated: { type: Boolean, default: false },
-    reset_OTP: String
+    reset_OTP: String,
+    userRole:String
 })
 const User = mongoose.model('User', userSchema, 'users')
 

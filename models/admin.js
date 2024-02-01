@@ -12,7 +12,8 @@ const adminSchema =new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Ticket'
         }
-    ]
+    ],
+    userRole:String
 })
 const Admin = mongoose.model('Admin', adminSchema)
 

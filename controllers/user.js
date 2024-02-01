@@ -17,7 +17,7 @@ const usercontrollers = {
         const passwordHash = await bcrypt.hash(password, 10);
 
         const user = new User({
-          name, email, passwordHash
+          name, email, passwordHash,userRole
         });
         await user.save();
         return res.status(200).json({ message: 'User created successfully' });
@@ -34,7 +34,7 @@ const usercontrollers = {
         const passwordHash = await bcrypt.hash(password, 10);
 
         const user = new Admin({
-          name, email, passwordHash
+          name, email, passwordHash,userRole
         });
 
         await user.save()
@@ -49,12 +49,12 @@ const usercontrollers = {
   signin: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const checkEmail = await User.findOne({ email });
+      const user = await User.findOne({ email });
       const admin = await Admin.findOne({ email });
 
-      if (checkEmail) {
-        if (checkEmail.activated) {
-          const passwordCheck = await bcrypt.compare(password, checkEmail.passwordHash);
+      if (user) {
+        if (user.activated) {
+          const passwordCheck = await bcrypt.compare(password, user.passwordHash);
 
           if (!passwordCheck) {
             return res.json({ message: "Password is incorrect" });
@@ -62,10 +62,10 @@ const usercontrollers = {
 
           const Token = await jwt.sign({
             email: email,
-            id: checkEmail._id
+            id: user._id
           }, JWT_SECRET);
 
-          return res.json({ Token,user:'student',checkEmail });
+          return res.json({ Token,user });
         } else {
           return res.json({ message: 'Go to your email and click the activation link to login.' });
         }
@@ -81,7 +81,7 @@ const usercontrollers = {
           id: admin._id
         }, JWT_SECRET);
 
-        return res.json({ Token,user:'mentee', admin });
+        return res.json({ Token, admin });
       } else {
         return res.json({ message: 'User not found!' });
       }
